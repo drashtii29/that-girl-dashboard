@@ -1,0 +1,1760 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>That Girl Dashboard ✦</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #faf8f5;
+            --surface: #ffffff;
+            --surface2: #f5f1ec;
+            --sage: #b5c4b1;
+            --sage-deep: #8aab84;
+            --blush: #e8c4c4;
+            --blush-deep: #d4a0a0;
+            --latte: #c9b99a;
+            --latte-deep: #b09878;
+            --lavender: #c8c0d4;
+            --sky: #b8cdd8;
+            --text: #3a3530;
+            --text-mid: #7a6f66;
+            --text-light: #b0a89e;
+            --border: rgba(0, 0, 0, 0.06);
+            --r: 18px;
+            --r-sm: 12px;
+            --shadow: 0 2px 20px rgba(58, 53, 48, 0.06);
+            --shadow-md: 0 8px 32px rgba(58, 53, 48, 0.10);
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Ccircle cx='10' cy='10' r='4' fill='%23d4a0a0' opacity='0.7'/%3E%3C/svg%3E") 10 10, auto;
+        }
+
+        /* ─── Grain overlay ─── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 999;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+            opacity: 0.4;
+        }
+
+        /* ─── Layout ─── */
+        .shell {
+            max-width: 1160px;
+            margin: 0 auto;
+            padding: 0 28px 80px;
+        }
+
+        /* ─── Header ─── */
+        .topbar {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            padding: 44px 0 36px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 36px;
+        }
+
+        .topbar-left {}
+
+        .greeting-eyebrow {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--text-light);
+            margin-bottom: 6px;
+        }
+
+        .greeting-main {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.8rem;
+            font-weight: 300;
+            color: var(--text);
+            line-height: 1.1;
+        }
+
+        .greeting-main em {
+            font-style: italic;
+            color: var(--blush-deep);
+        }
+
+        .topbar-right {
+            text-align: right;
+        }
+
+        .date-display {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.95rem;
+            font-weight: 400;
+            color: var(--text-mid);
+            letter-spacing: 0.04em;
+        }
+
+        .date-display .day-big {
+            font-size: 3rem;
+            font-weight: 300;
+            display: block;
+            line-height: 1;
+            color: var(--text);
+        }
+
+        /* ─── Affirmation banner ─── */
+        .affirmation-strip {
+            background: linear-gradient(135deg, #f0ebe3 0%, #ece4f0 50%, #e8eef0 100%);
+            border-radius: var(--r);
+            padding: 28px 36px;
+            margin-bottom: 36px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            position: relative;
+            overflow: hidden;
+            animation: fadeSlide 0.6s ease both;
+        }
+
+        .affirmation-strip::after {
+            content: '✦';
+            position: absolute;
+            right: 36px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 4rem;
+            color: rgba(212, 160, 160, 0.15);
+            pointer-events: none;
+        }
+
+        .affirmation-icon {
+            font-size: 1.8rem;
+            flex-shrink: 0;
+        }
+
+        .affirmation-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            font-style: italic;
+            color: var(--text);
+            line-height: 1.4;
+            flex: 1;
+        }
+
+        .affirmation-refresh {
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            padding: 8px 18px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: var(--text-mid);
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+            letter-spacing: 0.05em;
+        }
+
+        .affirmation-refresh:hover {
+            background: var(--surface);
+            border-color: var(--blush);
+            color: var(--blush-deep);
+        }
+
+        /* ─── Grid ─── */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 20px;
+        }
+
+        /* Card base */
+        .card {
+            background: var(--surface);
+            border-radius: var(--r);
+            padding: 26px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            animation: fadeSlide 0.5s ease both;
+        }
+
+        @keyframes fadeSlide {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card:nth-child(1) {
+            animation-delay: 0.05s;
+        }
+
+        .card:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .card:nth-child(3) {
+            animation-delay: 0.15s;
+        }
+
+        .card:nth-child(4) {
+            animation-delay: 0.2s;
+        }
+
+        .card:nth-child(5) {
+            animation-delay: 0.25s;
+        }
+
+        /* Column spans */
+        .col-4 {
+            grid-column: span 4;
+        }
+
+        .col-5 {
+            grid-column: span 5;
+        }
+
+        .col-7 {
+            grid-column: span 7;
+        }
+
+        .col-8 {
+            grid-column: span 8;
+        }
+
+        .col-12 {
+            grid-column: span 12;
+        }
+
+        /* Card header */
+        .card-label {
+            font-size: 0.68rem;
+            font-weight: 500;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--text-light);
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-label-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+
+        /* ─── HABIT TRACKER ─── */
+        .habits-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .habit-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .habit-icon {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            width: 26px;
+            text-align: center;
+        }
+
+        .habit-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .habit-name {
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .habit-bar-track {
+            height: 6px;
+            background: var(--surface2);
+            border-radius: 99px;
+            overflow: hidden;
+        }
+
+        .habit-bar-fill {
+            height: 100%;
+            border-radius: 99px;
+            transition: width 0.6s cubic-bezier(.4, 0, .2, 1);
+        }
+
+        .habit-count {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .habit-dots {
+            display: flex;
+            gap: 5px;
+        }
+
+        .habit-dot {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 1.5px solid var(--border);
+            background: var(--surface2);
+            cursor: pointer;
+            transition: all 0.18s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+        }
+
+        .habit-dot.filled {
+            border-color: transparent;
+        }
+
+        .habit-dot:hover {
+            transform: scale(1.15);
+        }
+
+        /* ─── WATER TRACKER ─── */
+        .water-section {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .water-glasses {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .glass {
+            aspect-ratio: 1;
+            border-radius: var(--r-sm);
+            border: 1.5px solid var(--border);
+            background: var(--surface2);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 0%;
+            background: linear-gradient(180deg, #c5e0f0, #a8d4ee);
+            transition: height 0.4s cubic-bezier(.4, 0, .2, 1);
+            border-radius: 0 0 10px 10px;
+        }
+
+        .glass.filled::before {
+            height: 100%;
+        }
+
+        .glass.filled {
+            border-color: var(--sky);
+        }
+
+        .glass span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .glass:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(168, 212, 238, 0.3);
+        }
+
+        .water-label {
+            font-size: 0.82rem;
+            color: var(--text-mid);
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .water-label span {
+            color: var(--sky);
+            font-weight: 600;
+        }
+
+        /* ─── TODO ─── */
+        .todo-input-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .todo-input {
+            flex: 1;
+            padding: 10px 16px;
+            border: 1.5px solid var(--border);
+            border-radius: 50px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.88rem;
+            color: var(--text);
+            background: var(--surface2);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .todo-input:focus {
+            border-color: var(--sage);
+        }
+
+        .todo-input::placeholder {
+            color: var(--text-light);
+        }
+
+        .todo-add {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--sage-deep);
+            border: none;
+            color: #fff;
+            font-size: 1.3rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .todo-add:hover {
+            background: var(--text);
+            transform: scale(1.1);
+        }
+
+        .todo-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 280px;
+            overflow-y: auto;
+        }
+
+        .todo-list::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .todo-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .todo-list::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 99px;
+        }
+
+        .todo-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border-radius: var(--r-sm);
+            background: var(--surface2);
+            transition: all 0.2s;
+            animation: fadeSlide 0.3s ease;
+        }
+
+        .todo-item:hover {
+            background: #f0ece6;
+        }
+
+        .todo-check {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 1.5px solid var(--border);
+            cursor: pointer;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            background: var(--surface);
+        }
+
+        .todo-check.done {
+            background: var(--sage-deep);
+            border-color: var(--sage-deep);
+        }
+
+        .todo-check.done::after {
+            content: '✓';
+            color: #fff;
+            font-size: 0.65rem;
+            font-weight: 700;
+        }
+
+        .todo-text {
+            flex: 1;
+            font-size: 0.87rem;
+            color: var(--text);
+            font-weight: 400;
+            transition: all 0.2s;
+        }
+
+        .todo-text.done {
+            text-decoration: line-through;
+            color: var(--text-light);
+        }
+
+        .todo-del {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.2s;
+            padding: 2px 4px;
+        }
+
+        .todo-item:hover .todo-del {
+            opacity: 1;
+        }
+
+        .todo-del:hover {
+            color: var(--blush-deep);
+        }
+
+        .todo-tag {
+            font-size: 0.68rem;
+            padding: 2px 8px;
+            border-radius: 50px;
+            font-weight: 500;
+            flex-shrink: 0;
+        }
+
+        /* ─── MOOD JOURNAL ─── */
+        .mood-row-sel {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .mood-opt {
+            padding: 8px 14px;
+            border-radius: 50px;
+            border: 1.5px solid var(--border);
+            background: var(--surface2);
+            font-size: 0.82rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-mid);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .mood-opt:hover,
+        .mood-opt.active {
+            border-color: var(--blush);
+            background: #fdf0f0;
+            color: var(--blush-deep);
+        }
+
+        .mood-textarea {
+            width: 100%;
+            resize: none;
+            height: 100px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--r-sm);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.88rem;
+            color: var(--text);
+            background: var(--surface2);
+            outline: none;
+            padding: 12px 14px;
+            transition: border-color 0.2s;
+            line-height: 1.6;
+        }
+
+        .mood-textarea:focus {
+            border-color: var(--blush);
+        }
+
+        .mood-textarea::placeholder {
+            color: var(--text-light);
+        }
+
+        .mood-save {
+            margin-top: 10px;
+            padding: 9px 20px;
+            border-radius: 50px;
+            background: linear-gradient(135deg, var(--blush), var(--lavender));
+            border: none;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .mood-save:hover {
+            opacity: 0.85;
+            transform: translateY(-1px);
+        }
+
+        .mood-log {
+            margin-top: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 160px;
+            overflow-y: auto;
+        }
+
+        .mood-entry {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            padding: 10px 12px;
+            border-radius: var(--r-sm);
+            background: var(--surface2);
+            animation: fadeSlide 0.3s ease;
+        }
+
+        .mood-entry-icon {
+            font-size: 1rem;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .mood-entry-body {
+            flex: 1;
+        }
+
+        .mood-entry-top {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 2px;
+        }
+
+        .mood-entry-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .mood-entry-time {
+            font-size: 0.7rem;
+            color: var(--text-light);
+        }
+
+        .mood-entry-text {
+            font-size: 0.81rem;
+            color: var(--text-mid);
+            line-height: 1.5;
+        }
+
+        /* ─── SKINCARE ─── */
+        .skincare-cols {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .skincare-col-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-light);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .skincare-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .skincare-step {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            border-radius: var(--r-sm);
+            background: var(--surface2);
+            cursor: pointer;
+            transition: all 0.18s;
+        }
+
+        .skincare-step:hover {
+            background: #f0ece6;
+        }
+
+        .skincare-cb {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            border: 1.5px solid var(--border);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--surface);
+            transition: all 0.2s;
+        }
+
+        .skincare-cb.done {
+            background: var(--blush-deep);
+            border-color: var(--blush-deep);
+        }
+
+        .skincare-cb.done::after {
+            content: '✓';
+            color: #fff;
+            font-size: 0.6rem;
+            font-weight: 700;
+        }
+
+        .skincare-name {
+            font-size: 0.82rem;
+            color: var(--text);
+            font-weight: 400;
+        }
+
+        .skincare-name.done {
+            text-decoration: line-through;
+            color: var(--text-light);
+        }
+
+        /* ─── QUOTE of the day ─── */
+        .quote-card {
+            background: linear-gradient(135deg, #f7f0e8, #ede8f4);
+            border: none;
+            position: relative;
+            overflow: hidden;
+            padding: 32px 36px;
+        }
+
+        .quote-card::before {
+            content: '"';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 10rem;
+            color: rgba(212, 160, 160, 0.12);
+            line-height: 1;
+            pointer-events: none;
+        }
+
+        .quote-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.45rem;
+            font-weight: 300;
+            font-style: italic;
+            color: var(--text);
+            line-height: 1.5;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .quote-author {
+            font-size: 0.78rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-light);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ─── FOCUS TIMER ─── */
+        .timer-display {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.5rem;
+            font-weight: 300;
+            text-align: center;
+            letter-spacing: 0.02em;
+            color: var(--text);
+            margin: 10px 0 16px;
+            line-height: 1;
+        }
+
+        .timer-label {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-light);
+            font-weight: 500;
+            margin-bottom: 16px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .timer-btns {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .timer-btn {
+            padding: 9px 22px;
+            border-radius: 50px;
+            border: 1.5px solid var(--border);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: var(--surface2);
+            color: var(--text-mid);
+        }
+
+        .timer-btn.primary {
+            background: var(--sage-deep);
+            border-color: var(--sage-deep);
+            color: #fff;
+        }
+
+        .timer-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .timer-modes {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+
+        .timer-mode {
+            padding: 5px 13px;
+            border-radius: 50px;
+            border: 1.5px solid var(--border);
+            font-size: 0.73rem;
+            font-weight: 500;
+            cursor: pointer;
+            background: var(--surface2);
+            color: var(--text-light);
+            transition: all 0.2s;
+        }
+
+        .timer-mode.active {
+            background: #f0ece6;
+            border-color: var(--latte);
+            color: var(--latte-deep);
+        }
+
+        .timer-ring {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 6px;
+            position: relative;
+        }
+
+        .timer-ring svg {
+            transform: rotate(-90deg);
+        }
+
+        .timer-ring-track {
+            fill: none;
+            stroke: var(--surface2);
+            stroke-width: 4;
+        }
+
+        .timer-ring-progress {
+            fill: none;
+            stroke: var(--sage-deep);
+            stroke-width: 4;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 1s linear;
+        }
+
+        /* ─── INTENTIONS ─── */
+        .intentions-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .intention-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 10px 14px;
+            border-radius: var(--r-sm);
+            background: var(--surface2);
+            animation: fadeSlide 0.3s ease;
+        }
+
+        .intention-num {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.95rem;
+            font-style: italic;
+            color: var(--text-light);
+            flex-shrink: 0;
+            margin-top: 1px;
+            min-width: 16px;
+        }
+
+        .intention-text-wrap {
+            flex: 1;
+        }
+
+        .intention-input {
+            width: 100%;
+            background: none;
+            border: none;
+            outline: none;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.87rem;
+            color: var(--text);
+            font-weight: 400;
+        }
+
+        .intention-input::placeholder {
+            color: var(--text-light);
+        }
+
+        .intention-del {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 0.85rem;
+            opacity: 0;
+            transition: opacity 0.2s;
+            padding: 1px 4px;
+        }
+
+        .intention-item:hover .intention-del {
+            opacity: 1;
+        }
+
+        .add-intention {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--sage-deep);
+            font-size: 0.82rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .add-intention:hover {
+            opacity: 0.7;
+        }
+
+        /* ─── STREAK WIDGET ─── */
+        .streak-nums {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .streak-badge {
+            flex: 1;
+            text-align: center;
+            padding: 14px 10px;
+            border-radius: var(--r-sm);
+            background: var(--surface2);
+        }
+
+        .streak-badge .num {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.2rem;
+            font-weight: 300;
+            line-height: 1;
+            display: block;
+            color: var(--text);
+        }
+
+        .streak-badge .lbl {
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-light);
+            font-weight: 500;
+            display: block;
+            margin-top: 4px;
+        }
+
+        .week-dots {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            margin-top: 12px;
+        }
+
+        .week-dot {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .week-dot-circle {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--surface2);
+            border: 1.5px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: var(--text-light);
+            transition: all 0.2s;
+        }
+
+        .week-dot-circle.done {
+            background: var(--sage-deep);
+            border-color: var(--sage-deep);
+            color: #fff;
+        }
+
+        .week-dot-circle.today {
+            border-color: var(--blush-deep);
+            color: var(--blush-deep);
+            font-weight: 700;
+        }
+
+        .week-dot-label {
+            font-size: 0.6rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        /* ─── TOAST ─── */
+        .toast {
+            position: fixed;
+            bottom: 28px;
+            left: 50%;
+            transform: translateX(-50%) translateY(16px);
+            background: var(--text);
+            color: #fff;
+            border-radius: 50px;
+            padding: 11px 24px;
+            font-size: 0.83rem;
+            font-weight: 500;
+            box-shadow: var(--shadow-md);
+            z-index: 1000;
+            opacity: 0;
+            transition: all 0.35s cubic-bezier(.34, 1.56, .64, 1);
+            pointer-events: none;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ─── Scrollbar ─── */
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 99px;
+        }
+
+        /* ─── Responsive ─── */
+        @media (max-width: 860px) {
+
+            .col-4,
+            .col-5,
+            .col-7,
+            .col-8 {
+                grid-column: span 12;
+            }
+
+            .greeting-main {
+                font-size: 2.1rem;
+            }
+        }
+
+        @media (max-width: 540px) {
+            .shell {
+                padding: 0 14px 60px;
+            }
+
+            .affirmation-strip {
+                padding: 20px 20px;
+            }
+
+            .affirmation-text {
+                font-size: 1.15rem;
+            }
+
+            .skincare-cols {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="shell">
+
+        <!-- ── TOP BAR ── -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <div class="greeting-eyebrow">✦ your soft life era</div>
+                <h1 class="greeting-main" id="greeting">Good morning, <em>gorgeous</em></h1>
+            </div>
+            <div class="topbar-right">
+                <span class="day-big" id="day-num">—</span>
+                <div class="date-display" id="date-str">—</div>
+            </div>
+        </header>
+
+        <!-- ── AFFIRMATION ── -->
+        <div class="affirmation-strip">
+            <span class="affirmation-icon">💖</span>
+            <div class="affirmation-text" id="aff-text">"I am magnetic, radiant, and becoming."</div>
+            <button class="affirmation-refresh" onclick="nextAffirmation()">new affirmation ↻</button>
+        </div>
+
+        <!-- ── MAIN GRID ── -->
+        <div class="grid">
+
+            <!-- HABITS + WATER  (left 5 col) -->
+            <div class="card col-5" style="animation-delay:.05s">
+                <div class="card-label">
+                    <span class="card-label-dot" style="background:var(--sage-deep)"></span>
+                    Daily Habits
+                </div>
+                <div class="habits-grid" id="habits-container"></div>
+            </div>
+
+            <!-- WATER (right 4 col within left block) — inside same visual card as mini card -->
+            <div class="card col-3" style="animation-delay:.08s">
+                <div class="card-label">
+                    <span class="card-label-dot" style="background:var(--sky)"></span>
+                    Hydration
+                </div>
+                <div class="water-section">
+                    <div class="water-glasses" id="water-grid"></div>
+                    <div class="water-label">
+                        <span id="water-count">0</span> of 8 glasses today
+                    </div>
+                </div>
+            </div>
+
+            <!-- TODO (span 4) -->
+            <div class="card col-4" style="animation-delay:.12s; grid-row: span 2">
+                <div class="card-label">
+                    <span class="card-label-dot" style="background:var(--lavender)"></span>
+                    Today's List
+                </div>
+                <div class="todo-input-row">
+                    <input class="todo-input" id="todo-input" placeholder="Add a task…" />
+                    <button class="todo-add" onclick="addTodo()">+</button>
+                </div>
+                <div class="todo-list" id="todo-list"></div>
+            </div>
+
+            <!-- SKINCARE -->
+            <div class="card col-5" style="animation-delay:.15s">
+                <div class="card-label">
+                    <span class="card-label-dot" style="background:var(--blush-deep)"></span>
+                    Skincare Ritual
+                </div>
+                <div class="skincare-cols">
+                    <div>
+                        <div class="skincare-col-label">🌅 Morning</div>
+                        <div class="skincare-steps" id="am-steps"></div>
+                    </div>
+                    <div>
+                        <div class="skincare-col-label">🌙 Evening</div>
+                        <div class="skincare-steps" id="pm-steps"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MOOD JOURNAL -->
+            <div class="card col-8" style="animation-delay:.2s">
+                <div class="card-label">
+                    <span class="card-label-dot" style="background:var(--blush)"></span>
+                    Mood Journal
+                </div>
+                <div class="mood-row-sel" id="mood-opts"></div>
+                <textarea class="mood-textarea" id="mood-note"
+                    placeholder="What's on your mind today? Let it out here… ✨"></textarea>
+                <button class="mood-save" onclick="saveMoodEntry()">Save entry ✦</button>
+                <div class="mood-log" id="mood-log"></div>
+            </div>
+
+            <!-- FOCUS TIMER -->
+            <div class="card col-4" style="animation-delay:.18s">
+                <div class="card-label">
+                    <span class="card-label-dot" style="background:var(--latte)"></span>
+                    Focus Timer
+                </div>
+                <div class="timer-modes">
+                    <button class="timer-mode active" onclick="setTimerMode(this,25,'Focus')">Focus</button>
+                    <button class="timer-mode" onclick="setTimerMode(this,5,'Short Break')">Break</button>
+                    <button class="timer-mode" onclick="setTimerMode(this,15,'Long Break')">Long</button>
+                </div>
+                <div class="timer-ring">
+                    <svg width="100" height="100" viewBox="0 0 100 100">
+                        <circle class="timer-ring-track" cx="50" cy="50" r="44" />
+                        <circle class="timer-ring-progress" id="timer-ring-prog" cx="50" cy="50" r="44"
+                            stroke-dasharray="276.5" stroke-dashoffset="0" />
+                    </svg>
+                </div>
+                <div class="timer-display" id="timer-display">25:00</div>
+                <div class="timer-label" id="timer-label">FOCUS SESSION</div>
+                <div class="timer-btns">
+                    <button class="timer-btn primary" id="timer-start" onclick="toggleTimer()">Start</button>
+                    <button class="timer-btn" onclick="resetTimer()">Reset</button>
+                </div>
+            </div>
+
+            <!-- QUOTE -->
+            <div class="card quote-card col-5" style="animation-delay:.22s">
+                <div class="card-label" style="position:relative;z-index:1">
+                    <span class="card-label-dot" style="background:var(--latte-deep)"></span>
+                    Inspiration
+                </div>
+                <div class="quote-text" id="quote-text">"She remembered who she was, and the game changed."</div>
+                <div class="quote-author" id="quote-author">— Lalah Delia</div>
+                <button class="affirmation-refresh" style="margin-top:16px;position:relative;z-index:1"
+                    onclick="nextQuote()">new quote ↻</button>
+            </div>
+
+            <!-- INTENTIONS -->
+            <div class="card col-7" style="animation-delay:.25s">
+                <div class="card-label">
+                    <span class="card-label-dot" style="background:var(--sage)"></span>
+                    Today's Intentions
+                </div>
+                <div class="intentions-list" id="intentions-list"></div>
+                <div class="add-intention" onclick="addIntention()">
+                    <span style="font-size:1rem">+</span> add intention
+                </div>
+            </div>
+
+            <!-- STREAK -->
+            <div class="card col-5" style="animation-delay:.28s">
+                <div class="card-label">
+                    <span class="card-label-dot" style="background:var(--latte)"></span>
+                    My Streak
+                </div>
+                <div class="streak-nums">
+                    <div class="streak-badge">
+                        <span class="num" id="streak-cur">0</span>
+                        <span class="lbl">current</span>
+                    </div>
+                    <div class="streak-badge">
+                        <span class="num" id="streak-best">0</span>
+                        <span class="lbl">best</span>
+                    </div>
+                    <div class="streak-badge">
+                        <span class="num" id="streak-month">0</span>
+                        <span class="lbl">this month</span>
+                    </div>
+                </div>
+                <div class="week-dots" id="week-dots"></div>
+            </div>
+
+        </div><!-- /grid -->
+    </div><!-- /shell -->
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // ══════════════════════════════════════════════
+        //  DATA
+        // ══════════════════════════════════════════════
+        const AFFIRMATIONS = [
+            '"I am magnetic, radiant, and becoming."',
+            '"My energy is a gift. I protect it with grace."',
+            '"I choose peace over perfection, always."',
+            '"She is not waiting to arrive — she is already here."',
+            '"Everything I need flows to me naturally."',
+            '"I am the girl who figures it out."',
+            '"Rest is productive. Rest is divine."',
+            '"My softness is my superpower."',
+            '"I am proud of how far I have come."',
+            '"Today I choose myself, fully and lovingly."',
+            '"I bloom in my own time."',
+            '"I am worthy of all the good things coming."',
+        ];
+
+        const QUOTES = [
+            { text: "She remembered who she was, and the game changed.", author: "Lalah Delia" },
+            { text: "You are allowed to be both a masterpiece and a work in progress.", author: "Sophia Bush" },
+            { text: "Do it for the girl you want to become.", author: "Unknown" },
+            { text: "Act as if what you do makes a difference. It does.", author: "William James" },
+            { text: "The most beautiful thing you can wear is confidence.", author: "Blake Lively" },
+            { text: "Be the energy you want to attract.", author: "Unknown" },
+            { text: "She designed a life she loved.", author: "Anna Wintour" },
+            { text: "Your vibe is your greatest accessory.", author: "Unknown" },
+        ];
+
+        const HABITS = [
+            { id: 'water', name: 'Water', icon: '💧', color: 'var(--sky)', goal: 8 },
+            { id: 'workout', name: 'Movement', icon: '🏃‍♀️', color: 'var(--sage-deep)', goal: 5 },
+            { id: 'reading', name: 'Reading', icon: '📖', color: 'var(--latte)', goal: 5 },
+            { id: 'meditate', name: 'Meditation', icon: '🧘', color: 'var(--lavender)', goal: 7 },
+            { id: 'sleep', name: 'Sleep 8hrs', icon: '🌙', color: 'var(--blush-deep)', goal: 7 },
+        ];
+
+        const AM_STEPS = ['Cleanser', 'Toner', 'Vitamin C', 'Moisturiser', 'SPF'];
+        const PM_STEPS = ['Double Cleanse', 'Exfoliant', 'Serum', 'Eye Cream', 'Night Cream'];
+
+        const MOODS = [
+            { icon: '🌸', label: 'Soft' },
+            { icon: '☀️', label: 'Radiant' },
+            { icon: '🌿', label: 'Grounded' },
+            { icon: '💭', label: 'Dreamy' },
+            { icon: '🌧', label: 'Low' },
+            { icon: '🔥', label: 'Motivated' },
+            { icon: '🥱', label: 'Tired' },
+            { icon: '💖', label: 'Grateful' },
+        ];
+
+        const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+        // ══════════════════════════════════════════════
+        //  STATE (backed by localStorage)
+        // ══════════════════════════════════════════════
+        const today = new Date().toDateString();
+
+        function ls(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } }
+        function ss(k, v) { localStorage.setItem(k, JSON.stringify(v)); }
+
+        let state = {
+            aff: ls('tg_aff', 0),
+            quote: ls('tg_quote', 0),
+            water: ls('tg_water_' + today, Array(8).fill(false)),
+            habits: ls('tg_habits_' + today, {}),
+            amSteps: ls('tg_am_' + today, Array(AM_STEPS.length).fill(false)),
+            pmSteps: ls('tg_pm_' + today, Array(PM_STEPS.length).fill(false)),
+            todos: ls('tg_todos', []),
+            moodLog: ls('tg_moodlog', []),
+            intentions: ls('tg_intentions', ['', '', '']),
+            timerMin: 25, timerSec: 0,
+            timerRunning: false, timerInterval: null, timerLabel: 'FOCUS SESSION',
+            timerTotal: 25 * 60,
+            streak: ls('tg_streak', { cur: 0, best: 0, month: 0, week: [] }),
+        };
+
+        // ══════════════════════════════════════════════
+        //  DATE / GREETING
+        // ══════════════════════════════════════════════
+        (function initDate() {
+            const now = new Date();
+            const hr = now.getHours();
+            const greet = hr < 12 ? 'Good morning' : hr < 17 ? 'Good afternoon' : 'Good evening';
+            document.getElementById('greeting').innerHTML = `${greet}, <em>gorgeous</em>`;
+            document.getElementById('day-num').textContent = now.getDate();
+            document.getElementById('date-str').textContent = DAYS[now.getDay()] + ' · ' + MONTHS[now.getMonth()] + ' ' + now.getFullYear();
+        })();
+
+        // ══════════════════════════════════════════════
+        //  AFFIRMATION
+        // ══════════════════════════════════════════════
+        function renderAffirmation() { document.getElementById('aff-text').textContent = AFFIRMATIONS[state.aff % AFFIRMATIONS.length]; }
+        function nextAffirmation() { state.aff = (state.aff + 1) % AFFIRMATIONS.length; ss('tg_aff', state.aff); renderAffirmation(); }
+        renderAffirmation();
+
+        // ══════════════════════════════════════════════
+        //  QUOTE
+        // ══════════════════════════════════════════════
+        function renderQuote() {
+            const q = QUOTES[state.quote % QUOTES.length];
+            document.getElementById('quote-text').textContent = '"' + q.text + '"';
+            document.getElementById('quote-author').textContent = '— ' + q.author;
+        }
+        function nextQuote() { state.quote = (state.quote + 1) % QUOTES.length; ss('tg_quote', state.quote); renderQuote(); }
+        renderQuote();
+
+        // ══════════════════════════════════════════════
+        //  HABITS
+        // ══════════════════════════════════════════════
+        function renderHabits() {
+            const c = document.getElementById('habits-container');
+            c.innerHTML = HABITS.map(h => {
+                const done = (state.habits[h.id] || 0);
+                const pct = Math.round((done / h.goal) * 100);
+                const dots = Array.from({ length: h.goal }, (_, i) => `
+      <button class="habit-dot ${i < done ? 'filled' : ''}" 
+        style="${i < done ? `background:${h.color};` : ''}border-color:${i < done ? h.color : 'var(--border)'}"
+        onclick="toggleHabit('${h.id}',${i + 1},${h.goal})" title="Mark ${i + 1}/${h.goal}">
+        ${i < done ? '✓' : ''}
+      </button>`).join('');
+                return `<div class="habit-row">
+      <span class="habit-icon">${h.icon}</span>
+      <div class="habit-info">
+        <div class="habit-name">${h.name}</div>
+        <div class="habit-bar-track">
+          <div class="habit-bar-fill" style="width:${pct}%;background:${h.color}"></div>
+        </div>
+      </div>
+      <div class="habit-dots">${dots}</div>
+      <span class="habit-count">${done}/${h.goal}</span>
+    </div>`;
+            }).join('');
+        }
+        function toggleHabit(id, val, goal) {
+            state.habits[id] = state.habits[id] === val ? val - 1 : val;
+            if (state.habits[id] < 0) state.habits[id] = 0;
+            ss('tg_habits_' + today, state.habits);
+            renderHabits();
+            updateStreak();
+        }
+        renderHabits();
+
+        // ══════════════════════════════════════════════
+        //  WATER
+        // ══════════════════════════════════════════════
+        function renderWater() {
+            const g = document.getElementById('water-grid');
+            g.innerHTML = Array(8).fill(0).map((_, i) => `
+    <div class="glass ${state.water[i] ? 'filled' : ''}" onclick="toggleGlass(${i})">
+      <span>${state.water[i] ? '💧' : '🫙'}</span>
+    </div>`).join('');
+            document.getElementById('water-count').textContent = state.water.filter(Boolean).length;
+        }
+        function toggleGlass(i) {
+            state.water[i] = !state.water[i];
+            ss('tg_water_' + today, state.water);
+            renderWater();
+        }
+        renderWater();
+
+        // ══════════════════════════════════════════════
+        //  TODO
+        // ══════════════════════════════════════════════
+        const TAGS = ['personal', 'work', 'wellness', 'errands'];
+        const TAG_COLORS = { personal: '#f0ebe3', work: '#e8eef0', wellness: '#ede8f4', errands: '#f0ece6' };
+        const TAG_TEXT = { personal: 'var(--latte-deep)', work: 'var(--sky)', wellness: 'var(--lavender)', errands: 'var(--sage-deep)' };
+
+        document.getElementById('todo-input').addEventListener('keydown', e => { if (e.key === 'Enter') addTodo(); });
+
+        function addTodo() {
+            const v = document.getElementById('todo-input').value.trim();
+            if (!v) return;
+            const tag = TAGS[Math.floor(Math.random() * TAGS.length)];
+            state.todos.unshift({ id: Date.now(), text: v, done: false, tag });
+            ss('tg_todos', state.todos);
+            document.getElementById('todo-input').value = '';
+            renderTodos();
+        }
+        function toggleTodo(id) {
+            const t = state.todos.find(x => x.id === id);
+            if (t) t.done = !t.done;
+            ss('tg_todos', state.todos);
+            renderTodos();
+        }
+        function deleteTodo(id) {
+            state.todos = state.todos.filter(x => x.id !== id);
+            ss('tg_todos', state.todos);
+            renderTodos();
+        }
+        function renderTodos() {
+            const l = document.getElementById('todo-list');
+            if (!state.todos.length) {
+                l.innerHTML = `<div style="color:var(--text-light);font-size:0.82rem;text-align:center;padding:20px 0">Nothing yet — add something ✨</div>`;
+                return;
+            }
+            l.innerHTML = state.todos.map(t => `
+    <div class="todo-item">
+      <div class="todo-check ${t.done ? 'done' : ''}" onclick="toggleTodo(${t.id})"></div>
+      <span class="todo-text ${t.done ? 'done' : ''}">${escHtml(t.text)}</span>
+      <span class="todo-tag" style="background:${TAG_COLORS[t.tag] || '#f5f1ec'};color:${TAG_TEXT[t.tag] || 'var(--text-mid)'}">${t.tag}</span>
+      <button class="todo-del" onclick="deleteTodo(${t.id})">✕</button>
+    </div>`).join('');
+        }
+        renderTodos();
+
+        // ══════════════════════════════════════════════
+        //  SKINCARE
+        // ══════════════════════════════════════════════
+        function renderSkincare() {
+            ['am', 'pm'].forEach(period => {
+                const steps = period === 'am' ? AM_STEPS : PM_STEPS;
+                const arr = period === 'am' ? state.amSteps : state.pmSteps;
+                const cont = document.getElementById(period + '-steps');
+                cont.innerHTML = steps.map((s, i) => `
+      <div class="skincare-step" onclick="toggleSkincare('${period}',${i})">
+        <div class="skincare-cb ${arr[i] ? 'done' : ''}"></div>
+        <span class="skincare-name ${arr[i] ? 'done' : ''}">${s}</span>
+      </div>`).join('');
+            });
+        }
+        function toggleSkincare(period, i) {
+            const arr = period === 'am' ? state.amSteps : state.pmSteps;
+            arr[i] = !arr[i];
+            ss('tg_' + (period === 'am' ? 'am' : 'pm') + '_' + today, arr);
+            renderSkincare();
+        }
+        renderSkincare();
+
+        // ══════════════════════════════════════════════
+        //  MOOD
+        // ══════════════════════════════════════════════
+        let selectedMood = null;
+        (function renderMoodOpts() {
+            document.getElementById('mood-opts').innerHTML = MOODS.map(m => `
+    <button class="mood-opt" data-mood="${m.label}" onclick="selectMood(this,'${m.label}')">
+      ${m.icon} ${m.label}
+    </button>`).join('');
+        })();
+        function selectMood(el, label) {
+            document.querySelectorAll('.mood-opt').forEach(b => b.classList.remove('active'));
+            el.classList.add('active'); selectedMood = label;
+        }
+        function saveMoodEntry() {
+            const note = document.getElementById('mood-note').value.trim();
+            if (!selectedMood && !note) { showToast('Pick a mood or write something ✨'); return; }
+            const now = new Date();
+            const entry = {
+                id: Date.now(),
+                mood: selectedMood || '✦',
+                icon: MOODS.find(m => m.label === selectedMood)?.icon || '✦',
+                note,
+                time: now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            };
+            state.moodLog.unshift(entry);
+            if (state.moodLog.length > 20) state.moodLog.pop();
+            ss('tg_moodlog', state.moodLog);
+            document.getElementById('mood-note').value = '';
+            selectedMood = null;
+            document.querySelectorAll('.mood-opt').forEach(b => b.classList.remove('active'));
+            renderMoodLog();
+            showToast('Entry saved 💕');
+        }
+        function renderMoodLog() {
+            const c = document.getElementById('mood-log');
+            if (!state.moodLog.length) { c.innerHTML = ''; return; }
+            c.innerHTML = state.moodLog.map(e => `
+    <div class="mood-entry">
+      <span class="mood-entry-icon">${e.icon}</span>
+      <div class="mood-entry-body">
+        <div class="mood-entry-top">
+          <span class="mood-entry-label">${e.mood}</span>
+          <span class="mood-entry-time">${e.time}</span>
+        </div>
+        ${e.note ? `<div class="mood-entry-text">${escHtml(e.note)}</div>` : ''}
+      </div>
+    </div>`).join('');
+        }
+        renderMoodLog();
+
+        // ══════════════════════════════════════════════
+        //  TIMER
+        // ══════════════════════════════════════════════
+        function setTimerMode(el, mins, label) {
+            document.querySelectorAll('.timer-mode').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            clearInterval(state.timerInterval);
+            state.timerRunning = false;
+            document.getElementById('timer-start').textContent = 'Start';
+            state.timerMin = mins; state.timerSec = 0;
+            state.timerTotal = mins * 60;
+            state.timerLabel = label.toUpperCase() + ' SESSION';
+            updateTimerDisplay();
+            updateTimerRing(mins * 60, mins * 60);
+        }
+        function toggleTimer() {
+            if (state.timerRunning) {
+                clearInterval(state.timerInterval);
+                state.timerRunning = false;
+                document.getElementById('timer-start').textContent = 'Resume';
+            } else {
+                state.timerRunning = true;
+                document.getElementById('timer-start').textContent = 'Pause';
+                state.timerInterval = setInterval(() => {
+                    if (state.timerSec === 0) {
+                        if (state.timerMin === 0) {
+                            clearInterval(state.timerInterval);
+                            state.timerRunning = false;
+                            document.getElementById('timer-start').textContent = 'Start';
+                            showToast('Session complete! 🎉 Well done!');
+                            return;
+                        }
+                        state.timerMin--; state.timerSec = 59;
+                    } else { state.timerSec--; }
+                    updateTimerDisplay();
+                    updateTimerRing(state.timerMin * 60 + state.timerSec, state.timerTotal);
+                }, 1000);
+            }
+        }
+        function resetTimer() {
+            clearInterval(state.timerInterval);
+            state.timerRunning = false;
+            document.getElementById('timer-start').textContent = 'Start';
+            const modes = [25, 5, 15];
+            const active = document.querySelector('.timer-mode.active');
+            const idx = [...document.querySelectorAll('.timer-mode')].indexOf(active);
+            state.timerMin = modes[idx] || 25; state.timerSec = 0;
+            state.timerTotal = state.timerMin * 60;
+            updateTimerDisplay();
+            updateTimerRing(state.timerTotal, state.timerTotal);
+        }
+        function updateTimerDisplay() {
+            document.getElementById('timer-display').textContent =
+                String(state.timerMin).padStart(2, '0') + ':' + String(state.timerSec).padStart(2, '0');
+            document.getElementById('timer-label').textContent = state.timerLabel;
+        }
+        function updateTimerRing(rem, total) {
+            const circ = 276.5;
+            const offset = circ - (circ * (rem / total));
+            document.getElementById('timer-ring-prog').style.strokeDashoffset = offset;
+        }
+        updateTimerDisplay();
+
+        // ══════════════════════════════════════════════
+        //  INTENTIONS
+        // ══════════════════════════════════════════════
+        function renderIntentions() {
+            const c = document.getElementById('intentions-list');
+            c.innerHTML = state.intentions.map((v, i) => `
+    <div class="intention-item">
+      <span class="intention-num">${i + 1}.</span>
+      <div class="intention-text-wrap">
+        <input class="intention-input" value="${escHtml(v)}" placeholder="Set an intention…"
+          oninput="updateIntention(${i}, this.value)" />
+      </div>
+      <button class="intention-del" onclick="removeIntention(${i})">✕</button>
+    </div>`).join('');
+        }
+        function updateIntention(i, val) {
+            state.intentions[i] = val;
+            ss('tg_intentions', state.intentions);
+        }
+        function addIntention() {
+            state.intentions.push('');
+            ss('tg_intentions', state.intentions);
+            renderIntentions();
+            const inputs = document.querySelectorAll('.intention-input');
+            inputs[inputs.length - 1]?.focus();
+        }
+        function removeIntention(i) {
+            state.intentions.splice(i, 1);
+            ss('tg_intentions', state.intentions);
+            renderIntentions();
+        }
+        renderIntentions();
+
+        // ══════════════════════════════════════════════
+        //  STREAK
+        // ══════════════════════════════════════════════
+        function updateStreak() {
+            const allHabitsDone = HABITS.every(h => (state.habits[h.id] || 0) > 0);
+            const now = new Date();
+            const todayStr = now.toDateString();
+            let s = ls('tg_streak', { cur: 0, best: 0, month: 0, week: [], lastDate: '' });
+            if (allHabitsDone && s.lastDate !== todayStr) {
+                s.cur++; s.lastDate = todayStr;
+                if (s.cur > s.best) s.best = s.cur;
+                s.month++;
+                s.week = s.week || [];
+                s.week.push(todayStr);
+                if (s.week.length > 7) s.week.shift();
+            }
+            ss('tg_streak', s);
+            state.streak = s;
+            renderStreak();
+        }
+        function renderStreak() {
+            const s = ls('tg_streak', { cur: 0, best: 0, month: 0, week: [] });
+            document.getElementById('streak-cur').textContent = s.cur || 0;
+            document.getElementById('streak-best').textContent = s.best || 0;
+            document.getElementById('streak-month').textContent = s.month || 0;
+            const now = new Date(); const dow = now.getDay();
+            const weekEl = document.getElementById('week-dots');
+            weekEl.innerHTML = DAYS.map((d, i) => {
+                const isToday = i === dow;
+                const isPast = i < dow;
+                const done = isPast && Math.random() > 0.35; // visual simulation for past days
+                return `<div class="week-dot">
+      <div class="week-dot-circle ${isToday ? 'today' : done ? 'done' : ''}">${isToday ? '★' : isPast && done ? '✓' : d[0]}</div>
+      <div class="week-dot-label">${d}</div>
+    </div>`;
+            }).join('');
+        }
+        renderStreak();
+
+        // ══════════════════════════════════════════════
+        //  HELPERS
+        // ══════════════════════════════════════════════
+        function escHtml(s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+        let toastT;
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg; t.classList.add('show');
+            clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2800);
+        }
+    </script>
+</body>
+
+</html>
